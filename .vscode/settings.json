@@ -1,0 +1,24 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.espIdfPathWin": "c:\\ESP-IDF\\esp-idf",
+    "idf.pythonInstallPath": "c:\\ESP-IDF\\esp-idf\\tools\\tools\\idf-python\\3.11.2\\python.exe",
+    "idf.openOcdConfigs": [
+        "board/esp32-wrover-kit-3.3v.cfg"
+    ],
+    "idf.portWin": "COM7",
+    "idf.toolsPathWin": "c:\\ESP-IDF\\esp-idf\\tools",
+    "files.associations": {
+        "math.h": "c",
+        "stdio.h": "c",
+        "*.tcc": "cpp",
+        "ratio": "cpp",
+        "system_error": "cpp",
+        "array": "cpp",
+        "functional": "cpp",
+        "regex": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp"
+    },
+    "idf.flashType": "UART"
+}
