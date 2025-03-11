@@ -1,13 +1,16 @@
 #ifndef MAX30102_H
 #define MAX30102_H
 
+// Based on the repository:
+// https://github.com/sparkfun/SparkFun_MAX3010x_Sensor_Library/tree/master
+
 // Include necessary standard libraries
 #include <stdint.h>
 
 #define MAX30102_ADDRESS 0x57
 #define I2C_MASTER_SCL_IO 22 // Set your SCL pin
 #define I2C_MASTER_SDA_IO 21 // Set your SDA pin
-#define I2C_MASTER_FREQ_HZ 400000
+#define I2C_MASTER_FREQ_HZ 100000
 #define I2C_MASTER_NUM I2C_NUM_0
 
 // Status Registers
@@ -37,9 +40,6 @@
 #define MAX30102_DIETEMPINT 0x1F
 #define MAX30102_DIETEMPFRAC 0x20
 #define MAX30102_DIETEMPCONFIG 0x21
-
-// Proximity Function Registers
-#define MAX30102_PROXINTTHRESH 0x30
 
 // Part ID Registers
 #define MAX30102_REVISIONID 0xFE
@@ -130,11 +130,6 @@
 #define SLOT_NONE 0x00
 #define SLOT_RED_LED 0x01
 #define SLOT_IR_LED 0x02
-#define SLOT_GREEN_LED 0x03
-#define SLOT_NONE_PILOT 0x04
-#define SLOT_RED_PILOT 0x05
-#define SLOT_IR_PILOT 0x06
-#define SLOT_GREEN_PILOT 0x07
 
 void i2c_init(void);
 

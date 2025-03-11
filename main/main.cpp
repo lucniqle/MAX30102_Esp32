@@ -70,7 +70,8 @@ extern "C"
             // printf("Temperature: %.2f\n", temp);
             max30102_readSensor(red, ir);
             // printf("Red: %lu, IR: %lu\n", red, ir);
-            printf("%lu\n", red);
+            // printf("%lu\n%lu\n", red, ir);
+            printf("%lu\n", ir);
             // counter++;
             vTaskDelay(10 / portTICK_PERIOD_MS);
         }
