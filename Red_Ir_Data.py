@@ -45,14 +45,13 @@ def print_peaks(data, peaks):
   plt.legend()
   plt.show()
 
-z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, timeout=1)
-
 red_data = np.zeros(shape=(NUMBER_OF_SAMPLES, 1), dtype= int)
 ir_data = np.zeros(shape=(NUMBER_OF_SAMPLES, 1), dtype= int)
 counter = 0
 
 if MODE == 0:
 
+  z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, timeout=1)
   while z1serial.is_open:
     data = z1serial.readline().strip()
     if data:  # Check if the string is not empty
@@ -77,19 +76,15 @@ if MODE == 0:
 
 if MODE == 1:
   red_data = np.loadtxt('red_data.csv', delimiter=',')
-  ir_data = np.loadtxt('ir_data.csv', delimiter=',')
+  ir_data = np.loadtxt('ir_data6.csv', delimiter=',')
 
-  # print(raw_data)
-  # data = np.delete(raw_data, 33)  # Remove the outlier
-  # data = np.delete(data, 5437)  # Remove the outlier
+  print_plot(red_data)
 
-  # print_plot(red_data)
+  print_plot(ir_data)
 
-  # print_plot(ir_data)
-
-  # red_peaks = detect_peaks(-red_data, distance=30, prominence=10)
-  # print(red_peaks)
-  # print_peaks(red_data, red_peaks)
+  red_peaks = detect_peaks(-red_data, distance=30, prominence=10)
+  print(red_peaks)
+  print_peaks(red_data, red_peaks)
 
   print(ir_data.shape)
   ir_peaks = detect_peaks(-ir_data, distance=30, prominence=10)
@@ -97,7 +92,7 @@ if MODE == 1:
   heart_rate = 0
   for i in range(0, len(ir_peaks)-1):
     heart_rate += ir_peaks[i+1] - ir_peaks[i]
-    # print(str(ir_peaks[i+1]) + " - " + str(ir_peaks[i]) + " = " + str(heart_rate))
+    print(str(ir_peaks[i+1]) + " - " + str(ir_peaks[i]) + " = " + str(heart_rate))
   print(heart_rate / (len(ir_peaks)-1))
   print_peaks(ir_data, ir_peaks)
 

@@ -73,7 +73,7 @@ extern "C"
             // printf("%lu\n%lu\n", red, ir);
             printf("%lu\n", ir);
             // counter++;
-            vTaskDelay(10 / portTICK_PERIOD_MS);
+            vTaskDelay(20 / portTICK_PERIOD_MS);
         }
     }
 }

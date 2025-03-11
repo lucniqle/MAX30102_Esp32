@@ -118,8 +118,8 @@
 #define MAX30102_PULSEWIDTH_411 0x03
 
 // LED Current Mode configuration (pg 20)
-#define MAX30102_LEDCURR_LED1 0x1F
-#define MAX30102_LEDCURR_LED2 0x1F
+#define MAX30102_LEDCURR_LED1 0x3F
+#define MAX30102_LEDCURR_LED2 0x3F
 
 // Multi-LED Mode configuration (pg 22)
 #define MAX30102_SLOT1_MASK 0xF8
