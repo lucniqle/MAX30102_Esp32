@@ -42,7 +42,7 @@ def moving_average(a, n=3):
 z1serial = serial.Serial(port=z1port, baudrate=z1baudrate, timeout=1)
 
 raw_data = np.zeros(shape=(NUMBER_OF_SAMPLES), dtype= int)
-ir_data = np.zeros(shape=(NUMBER_OF_SAMPLES), dtype= int)
+pp_data = np.zeros(shape=(NUMBER_OF_SAMPLES), dtype= int)
 counter = 0
 smp = 0
 
@@ -51,24 +51,22 @@ while z1serial.is_open:
     if data:  # Check if the string is not empty
         try:
             num = int(data)
-            if(num > 50000 and num < 4000000):  # Check if the number is within the range
+            if(num > 100000 and num < 4000000):  # Check if the number is within the range
                 if(counter < NUMBER_OF_SAMPLES):
                     raw_data[counter] = num
                     counter += 1
                 else:
                     counter = 0
-                    ir_data = moving_average(raw_data, 8)
-                    ir_peaks = detect_peaks(-ir_data, distance=15, prominence=10)
+                    pp_data = moving_average(raw_data, 8)
+                    peaks = detect_peaks(-pp_data, distance=15, prominence=10)
                     heart_rate = 0
-                    for i in range(0, len(ir_peaks)-1):
-                        heart_rate += ir_peaks[i+1] - ir_peaks[i]
-                    if((len(ir_peaks)-1) != 0):
+                    for i in range(0, len(peaks)-1):
+                        heart_rate += peaks[i+1] - peaks[i]
+                    if((len(peaks)-1) != 0):
                         # print_plot(ir_data)
-                        bps = heart_rate / (len(ir_peaks)-1)
+                        bps = heart_rate / (len(peaks)-1)
                         bpm = 60 / (bps * TIME_PER_SAMPLE)
-                        print(str(ir_peaks) + " - " + str(heart_rate) + "- " + str(bpm))
-                    # np.savetxt("ir_data" + str(smp) + ".csv", ir_data, delimiter=',', fmt='%d')  # Save as CSV
-                    # smp += 1
+                        print(str(peaks) + " - " + str(heart_rate) + "- " + str(bpm))
         except KeyboardInterrupt:
             print("Exception")
             z1serial.close()

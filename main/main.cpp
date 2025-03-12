@@ -71,7 +71,7 @@ extern "C"
             max30102_readSensor(red, ir);
             // printf("Red: %lu, IR: %lu\n", red, ir);
             // printf("%lu\n%lu\n", red, ir);
-            printf("%lu\n", ir);
+            printf("%lu\n", red);
             // counter++;
             vTaskDelay(20 / portTICK_PERIOD_MS);
         }

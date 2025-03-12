@@ -45,17 +45,17 @@ def print_peaks(data, peaks):
   plt.legend()
   plt.show()
 
-data = np.loadtxt('ir_data.csv', delimiter=',')
+data = np.loadtxt('red_data.csv', delimiter=',')
 
-ir_data = moving_average(data, 7)
+data = moving_average(data, 7)
 
-ir_peaks = detect_peaks(-ir_data, distance=15, prominence=10)
-print(ir_peaks)
+peaks = detect_peaks(-data, distance=15, prominence=10)
+print(peaks)
 heart_rate = 0
-for i in range(0, len(ir_peaks)-1):
-    heart_rate += ir_peaks[i+1] - ir_peaks[i]
-    print(str(ir_peaks[i+1]) + " - " + str(ir_peaks[i]) + " = " + str(heart_rate))
-bps = heart_rate / (len(ir_peaks)-1)
+for i in range(0, len(peaks)-1):
+    heart_rate += peaks[i+1] - peaks[i]
+    print(str(peaks[i+1]) + " - " + str(peaks[i]) + " = " + str(heart_rate))
+bps = heart_rate / (len(peaks)-1)
 bpm = 60 / (bps * TIME_PER_SAMPLE)
-print(str(len(ir_peaks)) + " - " + str(heart_rate) + "- " + str(bps) + "- " + str(bpm))
-print_peaks(ir_data, ir_peaks)
+print(str(len(peaks)) + " - " + str(heart_rate) + "- " + str(bps) + "- " + str(bpm))
+print_peaks(data, peaks)
