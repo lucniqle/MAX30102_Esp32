@@ -1,2 +1,3 @@
-idf_component_register(SRCS "max30102.cpp" "main.cpp"
-                    INCLUDE_DIRS ".")
+idf_component_register(SRCS "main.cpp"
+                    INCLUDE_DIRS "."
+                    REQUIRES max30102 driver)
