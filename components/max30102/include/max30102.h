@@ -137,7 +137,9 @@ esp_err_t max30102_init(void);
 
 esp_err_t max30102_config(void);
 
-esp_err_t max30102_readSensor(uint32_t &data, uint32_t &ir);
+esp_err_t max30102_readSensor(uint32_t &red);
+
+esp_err_t max30102_readSensor(uint32_t &red, uint32_t &ir);
 
 esp_err_t max30102_writeRegister(uint8_t reg, uint8_t value);
 

@@ -68,7 +68,7 @@ esp_err_t max30102_config(void)
     {
         return error;
     }
-    error = max30102_writeRegister(MAX30102_LED2_PULSEAMP, MAX30102_LEDCURR_LED2);
+    error = max30102_writeRegister(MAX30102_LED2_PULSEAMP, 0);
     if (error != ESP_OK)
     {
         return error;
@@ -119,7 +119,7 @@ esp_err_t max30102_readRegister(uint8_t reg, uint8_t *data, uint8_t size)
     return error;
 }
 
-esp_err_t max30102_readSensor(uint32_t &red, uint32_t &ir)
+esp_err_t max30102_readSensor(uint32_t &red)
 {
     esp_err_t error = ESP_ERR_TIMEOUT;
     uint8_t data[3];
@@ -134,7 +134,26 @@ esp_err_t max30102_readSensor(uint32_t &red, uint32_t &ir)
     error = i2c_master_cmd_begin(I2C_MASTER_NUM, cmd, 1000 / portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
     red = ((uint32_t)data[0] << 16) | ((uint32_t)data[1] << 8) | data[2];
-    // ir = ((uint32_t)data[3] << 16) | ((uint32_t)data[4] << 8) | data[5];
+
+    return error;
+}
+
+esp_err_t max30102_readSensor(uint32_t &red, uint32_t &ir)
+{
+    esp_err_t error = ESP_ERR_TIMEOUT;
+    uint8_t data[6];
+    i2c_cmd_handle_t cmd = i2c_cmd_link_create();
+    i2c_master_start(cmd);
+    i2c_master_write_byte(cmd, (MAX30102_ADDRESS << 1) | I2C_MASTER_WRITE, I2C_MASTER_ACK);
+    i2c_master_write_byte(cmd, 0x07, I2C_MASTER_ACK);
+    i2c_master_start(cmd);
+    i2c_master_write_byte(cmd, (MAX30102_ADDRESS << 1) | I2C_MASTER_READ, I2C_MASTER_ACK);
+    i2c_master_read(cmd, data, sizeof(data), I2C_MASTER_LAST_NACK);
+    i2c_master_stop(cmd);
+    error = i2c_master_cmd_begin(I2C_MASTER_NUM, cmd, 1000 / portTICK_PERIOD_MS);
+    i2c_cmd_link_delete(cmd);
+    red = ((uint32_t)data[0] << 16) | ((uint32_t)data[1] << 8) | data[2];
+    ir = ((uint32_t)data[3] << 16) | ((uint32_t)data[4] << 8) | data[5];
 
     return error;
 }

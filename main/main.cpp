@@ -53,26 +53,15 @@ extern "C"
         max30102_readRegister(MAX30102_MULTILEDCONFIG2, &value, 1);
         printf("Value SLOT2: %d\n", value);
         uint32_t red, ir;
-        uint8_t counter = 0;
-        // esp_rom_gpio_pad_select_gpio(PIN_INT);
-        // ESP_ERROR_CHECK_WITHOUT_ABORT(gpio_set_direction(PIN_INT, GPIO_MODE_INPUT));
-        // ESP_ERROR_CHECK_WITHOUT_ABORT(gpio_set_intr_type(PIN_INT, GPIO_INTR_ANYEDGE));
-        // ESP_ERROR_CHECK_WITHOUT_ABORT(gpio_isr_handler_add(PIN_INT, int_isr_handler, NULL));
         for (;;)
         {
-            // if (counter > 40)
-            //     break;
-            // max30102_readRegister(MAX30102_FIFOREADPTR, &value, 1);
-            // printf("READ: %d\n", value);
-            // max30102_readRegister(MAX30102_FIFOWRITEPTR, &value, 1);
-            // printf("WRITE: %d\n", value);
-            // float temp = max30102_readTemperature();
+
+            // float temp = max30102_readTemperature(); // Read temperature
             // printf("Temperature: %.2f\n", temp);
-            max30102_readSensor(red, ir);
-            // printf("Red: %lu, IR: %lu\n", red, ir);
+            // max30102_readSensor(red, ir); // Read red and ir values
             // printf("%lu\n%lu\n", red, ir);
+            max30102_readSensor(red); // Read red values
             printf("%lu\n", red);
-            // counter++;
             vTaskDelay(20 / portTICK_PERIOD_MS);
         }
     }
