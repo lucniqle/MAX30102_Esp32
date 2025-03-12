@@ -16,3 +16,11 @@ GND|GND
 SDA (GPIO21)|SDA
 SCL (GPIO22)|SCL
 
+## Example folder contents
+
+The library with the corresponding configuration is components/max30102 folder.
+
+In main the max30102 is initiated, has its data read and send through COM in a loop.
+
+In Data_Processing is locate the codes in Python for data visualization and the HeartRate estimation.
+
