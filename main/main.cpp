@@ -24,7 +24,6 @@ extern "C"
     void app_main(void)
     {
         i2c_init();
-        gpio_install_isr_service(0);
         // Usage example:
         max30102_init();
         if (max30102_config() != ESP_OK)
@@ -53,6 +52,7 @@ extern "C"
         max30102_readRegister(MAX30102_MULTILEDCONFIG2, &value, 1);
         printf("Value SLOT2: %d\n", value);
         uint32_t red, ir;
+        max30102_clearFiFo();
         for (;;)
         {
 
@@ -60,8 +60,10 @@ extern "C"
             // printf("Temperature: %.2f\n", temp);
             // max30102_readSensor(red, ir); // Read red and ir values
             // printf("%lu\n%lu\n", red, ir);
-            max30102_readSensor(red); // Read red values
-            printf("%lu\n", red);
+            // max30102_readSensor(red); // Read red values
+            // printf("%lu\n", red);
+            max30102_readSensor(red, ir); // Read red and ir values
+            printf("%lu\n", ir);
             vTaskDelay(20 / portTICK_PERIOD_MS);
         }
     }

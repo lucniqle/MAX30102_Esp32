@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 
 MODE = 1 # 0: Collect data, 1: Load data from file
 
-NUMBER_OF_SAMPLES_PER_SECOND = 100  # Number of samples per second
+NUMBER_OF_SAMPLES_PER_SECOND = 50  # Number of samples per second
 TIME_PER_SAMPLE = 1 / NUMBER_OF_SAMPLES_PER_SECOND  # Time per sample in seconds
-NUMBER_OF_SAMPLES = 10 * NUMBER_OF_SAMPLES_PER_SECOND  # Number of samples to collect
+NUMBER_OF_SAMPLES = 5 * NUMBER_OF_SAMPLES_PER_SECOND  # Number of samples to collect
 
 z1baudrate = 115200
 z1port = 'COM7'  # set the correct port before run it
@@ -35,19 +35,20 @@ def print_plot(data):
   plt.axis('tight')
   plt.show()
 
-def print_peaks(data, peaks):
+def print_peaks(data, peaks, led="led",):
   plt.figure(figsize=(10, 5))
   plt.plot(data, label="Data", color='blue')
   plt.plot(peaks, data[peaks], "ro", label="Peaks")  # Mark peaks with red dots
   plt.xlabel("Index")
   plt.ylabel("Value")
-  plt.title("Detected Peaks in the Data")
+  plt.title("Detected Peaks in " + led)
   plt.legend()
   plt.show()
 
 red_data = np.zeros(shape=(NUMBER_OF_SAMPLES, 1), dtype= int)
 ir_data = np.zeros(shape=(NUMBER_OF_SAMPLES, 1), dtype= int)
 counter = 0
+smp = 0
 
 if MODE == 0:
 
@@ -57,7 +58,7 @@ if MODE == 0:
     if data:  # Check if the string is not empty
       try:
           num = int(data)
-          if(num > 50000 and num < 2000000):  # Check if the number is within the range
+          if(num > 100000 and num < 4000000):  # Check if the number is within the range
             print(num)
             if(counter % 2 == 0):
               red_data[round(counter/2)] = num
@@ -65,34 +66,37 @@ if MODE == 0:
               ir_data[round((counter-1)/2)] = num
             counter += 1
           if counter == 2 * NUMBER_OF_SAMPLES:
-              z1serial.close()
-              break
+              np.savetxt("red_data" + str(smp) + ".csv", red_data, delimiter=',', fmt='%d')  # Save as CSV
+              np.savetxt("ir_data" + str(smp) + ".csv", ir_data, delimiter=',', fmt='%d')  # Save as CSV
+              smp += 1
+              counter = 0
       except ValueError:
           print("Invalid input: Cannot convert to an integer")
+      except KeyboardInterrupt:
+          print("Keyboard interrupt")
+          break
 
-  np.savetxt('red_data.csv', red_data, delimiter=',', fmt='%d')  # Save as CSV
-  np.savetxt('ir_data.csv', ir_data, delimiter=',', fmt='%d')  # Save as CSV
+  
 
 
 if MODE == 1:
-  red_data = np.loadtxt('red_data.csv', delimiter=',')
-  ir_data = np.loadtxt('ir_data6.csv', delimiter=',')
+  red_data = np.loadtxt('red_data0.csv', delimiter=',')
+  ir_data = np.loadtxt('ir_data0.csv', delimiter=',')
 
-  print_plot(red_data)
+  # print_plot(red_data)
 
-  print_plot(ir_data)
+  # print_plot(ir_data)
 
-  red_peaks = detect_peaks(-red_data, distance=30, prominence=10)
-  print(red_peaks)
-  print_peaks(red_data, red_peaks)
+  red_peaks = detect_peaks(-red_data, distance=15, prominence=10)
+  print_peaks(red_data, red_peaks, "RED")
 
-  print(ir_data.shape)
-  ir_peaks = detect_peaks(-ir_data, distance=30, prominence=10)
-  print(ir_peaks)
-  heart_rate = 0
-  for i in range(0, len(ir_peaks)-1):
-    heart_rate += ir_peaks[i+1] - ir_peaks[i]
-    print(str(ir_peaks[i+1]) + " - " + str(ir_peaks[i]) + " = " + str(heart_rate))
-  print(heart_rate / (len(ir_peaks)-1))
-  print_peaks(ir_data, ir_peaks)
+  ir_peaks = detect_peaks(-ir_data, distance=15, prominence=10)
+  print_peaks(ir_data, ir_peaks, "IR")
+
+  # heart_rate = 0
+  # for i in range(0, len(ir_peaks)-1):
+  #   heart_rate += ir_peaks[i+1] - ir_peaks[i]
+  #   print(str(ir_peaks[i+1]) + " - " + str(ir_peaks[i]) + " = " + str(heart_rate))
+  # print(heart_rate / (len(ir_peaks)-1))
+  # print_peaks(ir_data, ir_peaks)
 

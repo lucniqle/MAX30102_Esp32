@@ -43,17 +43,13 @@ esp_err_t max30102_config(void)
 
     max30102_reset();
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    // error = max30102_writeRegister(MAX30102_INTENABLE1, MAX30102_INT_DATA_RDY_ENABLE);
-    // if (error != ESP_OK)
-    // {
-    //     return error;
-    // }
     error = max30102_writeRegister(MAX30102_FIFOCONFIG, ((MAX30102_ROLLOVER_ENABLE << 4)) | (MAX30102_SAMPLEAVG_4));
     if (error != ESP_OK)
     {
         return error;
     }
-    error = max30102_writeRegister(MAX30102_MODECONFIG, MAX30102_MODE_REDONLY);
+    error = max30102_writeRegister(MAX30102_MODECONFIG, MAX30102_MODE_MULTILED); // Red and IR
+    // error = max30102_writeRegister(MAX30102_MODECONFIG, MAX30102_MODE_REDONLY);
     if (error != ESP_OK)
     {
         return error;
@@ -68,12 +64,14 @@ esp_err_t max30102_config(void)
     {
         return error;
     }
-    error = max30102_writeRegister(MAX30102_LED2_PULSEAMP, 0);
+    error = max30102_writeRegister(MAX30102_LED2_PULSEAMP, MAX30102_LEDCURR_LED2); // IR current
+    // error = max30102_writeRegister(MAX30102_LED2_PULSEAMP, 0);
     if (error != ESP_OK)
     {
         return error;
     }
-    error = max30102_writeRegister(MAX30102_MULTILEDCONFIG1, 0);
+    error = max30102_writeRegister(MAX30102_MULTILEDCONFIG1, (SLOT_RED_LED & ~MAX30102_SLOT1_MASK) | ((SLOT_IR_LED << 4) & ~MAX30102_SLOT2_MASK)); // Red and IR
+    // error = max30102_writeRegister(MAX30102_MULTILEDCONFIG1, 0);
     if (error != ESP_OK)
     {
         return error;
