@@ -28,6 +28,11 @@ def detect_peaks(data, distance=5, prominence=10):
     peaks, _ = find_peaks(data, distance=distance, prominence=prominence)
     return peaks
 
+def moving_average(a, n=3):
+    ret = np.cumsum(a, dtype=float)
+    ret[n:] = ret[n:] - ret[:-n]
+    return ret[n - 1:] / n
+
 def print_plot(data):
   plt.plot(data)
   plt.xlabel('samples')
@@ -54,7 +59,7 @@ while z1serial.is_open:
     if data:  # Check if the string is not empty
         try:
             num = int(data)
-            if(num > 50000 and num < 4000000):  # Check if the number is within the range
+            if(num > 10000 and num < 3000000):  # Check if the number is within the range
                 print(num)
                 ir_data[counter] = num
             counter += 1
@@ -66,7 +71,8 @@ while z1serial.is_open:
 
 np.savetxt('ir_data.csv', ir_data, delimiter=',', fmt='%d')  # Save as CSV
 
-ir_peaks = detect_peaks(-ir_data, distance=15, prominence=10)
+data = moving_average(ir_data, 8)
+ir_peaks = detect_peaks(-data, distance=15, prominence=10)
 print(ir_peaks)
 heart_rate = 0
 for i in range(0, len(ir_peaks)-1):
@@ -75,5 +81,5 @@ for i in range(0, len(ir_peaks)-1):
 bps = heart_rate / (len(ir_peaks)-1)
 bpm = 60 / (bps * TIME_PER_SAMPLE)
 print(str(len(ir_peaks)) + " - " + str(heart_rate) + "- " + str(bps) + "- " + str(bpm))
-print_peaks(ir_data, ir_peaks)
+print_peaks(data, ir_peaks)
 

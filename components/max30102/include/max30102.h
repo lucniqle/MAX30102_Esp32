@@ -8,7 +8,7 @@
 #include <stdint.h>
 
 #define MAX30102_ADDRESS 0x57
-#define I2C_MASTER_SCL_IO 22 // Set your SCL pin
+#define I2C_MASTER_SCL_IO 22 // Set your SCL pin]]
 #define I2C_MASTER_SDA_IO 21 // Set your SDA pin
 #define I2C_MASTER_FREQ_HZ 400000
 #define I2C_MASTER_NUM I2C_NUM_0

@@ -45,7 +45,7 @@ def print_peaks(data, peaks):
   plt.legend()
   plt.show()
 
-data = np.loadtxt('red_data.csv', delimiter=',')
+data = np.loadtxt('red_data2.csv', delimiter=',')
 
 data = moving_average(data, 7)
 

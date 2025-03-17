@@ -43,7 +43,7 @@ esp_err_t max30102_config(void)
 
     max30102_reset();
     vTaskDelay(100 / portTICK_PERIOD_MS);
-    error = max30102_writeRegister(MAX30102_FIFOCONFIG, ((MAX30102_ROLLOVER_ENABLE << 4)) | (MAX30102_SAMPLEAVG_4));
+    error = max30102_writeRegister(MAX30102_FIFOCONFIG, ((MAX30102_ROLLOVER_ENABLE << 4)) | (MAX30102_SAMPLEAVG_2));
     if (error != ESP_OK)
     {
         return error;
@@ -54,7 +54,7 @@ esp_err_t max30102_config(void)
     {
         return error;
     }
-    error = max30102_writeRegister(MAX30102_PARTICLECONFIG, ((MAX30102_ADCRANGE_4096 & ~MAX30102_ADCRANGE_MASK) | (MAX30102_SAMPLERATE_200 & ~MAX30102_SAMPLERATE_MASK) | MAX30102_PULSEWIDTH_411));
+    error = max30102_writeRegister(MAX30102_PARTICLECONFIG, ((MAX30102_ADCRANGE_4096 & ~MAX30102_ADCRANGE_MASK) | (MAX30102_SAMPLERATE_100 & ~MAX30102_SAMPLERATE_MASK) | MAX30102_PULSEWIDTH_215));
     if (error != ESP_OK)
     {
         return error;
